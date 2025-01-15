@@ -4,11 +4,11 @@ import time
 class TasbeehApp:
     def __init__(self, master=None):
         self.count = 0
-        self.history = []  # To store the history of actions
-        self.start_time = None  # To track the start time for the timer
-        self.elapsed_time = 0  # To track the total elapsed time
-        self.timer_running = False  # To keep track of timer status
-        self.timer_paused = False  # To keep track of the pause status
+        self.history = []  # To monitor the past acts
+        self.start_time = None  #To monitor the timer's start time
+        self.elapsed_time = 0  # To monitor all of the time that has passed
+        self.timer_running = False  # To monitor the status of the timer
+        self.timer_paused = False  # To monitor the status of the pause
         self.themes = [
             {"name": "Light", "bg": "#FFF", "fg": "#000"},
             {"name": "Dark", "bg": "#333", "fg": "#FFF"},
@@ -21,7 +21,7 @@ class TasbeehApp:
         if master:
             self.master = master
             self.master.title("Tasbeeh Counter")
-            self.master.geometry("350x450")  # Slightly larger window for better display
+            self.master.geometry("350x450")  #A little bigger window for improved visibility
             
             self.label = tk.Label(master, text="0", font=("Helvetica", 80, "bold"), fg="green")
             self.label.pack(pady=10)
@@ -53,38 +53,38 @@ class TasbeehApp:
     
     def increment(self):
         if not self.timer_running:
-            self.start_timer()  # Start the timer when counting begins
+            self.start_timer()  #Set the timing for when the counting starts.
         self.count += 1
         self.history.append(f"Incremented to {self.count} at {time.strftime('%Y-%m-%d %H:%M:%S')}")
         self.update_display()
         
     def decrement(self):
         if not self.timer_running:
-            self.start_timer()  # Start the timer when counting begins
+            self.start_timer()  # Set the timing for when the counting starts.
         self.count -= 1
         self.history.append(f"Decremented to {self.count} at {time.strftime('%Y-%m-%d %H:%M:%S')}")
         self.update_display()
         
     def reset(self):
         self.count = 0
-        self.elapsed_time = 0  # Reset elapsed time
+        self.elapsed_time = 0  #Reset the time that has passed.
         self.update_timer()
         self.history.append(f"Reset to 0 at {time.strftime('%Y-%m-%d %H:%M:%S')}")
         self.update_display()
-        self.stop_timer()  # Stop the timer when reset
+        self.stop_timer()  #When the timer is reset, stop it.
     
     def start_timer(self):
-        self.start_time = time.time() - self.elapsed_time  # Calculate the elapsed time from last reset
+        self.start_time = time.time() - self.elapsed_time  # Determine how much time has passed since the last reset.
         self.timer_running = True
         self.update_timer()
 
     def stop_timer(self):
-        self.elapsed_time = time.time() - self.start_time  # Store the elapsed time
+        self.elapsed_time = time.time() - self.start_time  # Save the time that has passed.
         self.timer_running = False
 
     def pause_timer(self):
         if self.timer_paused:
-            self.start_time = time.time() - self.elapsed_time  # Resume from where we paused
+            self.start_time = time.time() - self.elapsed_time  # Pick up where we left off.
             self.timer_running = True
             self.timer_paused = False
             self.pause_button.config(text="Pause")
@@ -92,16 +92,16 @@ class TasbeehApp:
             self.stop_timer()
             self.timer_paused = True
             self.pause_button.config(text="Resume")
-        self.update_timer()  # Update the timer display after pause or resume
+        self.update_timer()  # After pausing or restarting, update the timer display.
 
     def update_timer(self):
         if self.timer_running:
             self.elapsed_time = time.time() - self.start_time
-            self.master.after(100, self.update_timer)  # Call this function every 100ms to update the timer
+            self.master.after(100, self.update_timer)  # To update the timer, call this function every 100 milliseconds.
         self.display_time()
 
     def display_time(self):
-        # Convert elapsed time to HH:MM:SS format
+        # Convert elapsed time to the format HH:MM:SS.
         minutes, seconds = divmod(int(self.elapsed_time), 60)
         hours, minutes = divmod(minutes, 60)
         time_str = f"{hours:02}:{minutes:02}:{seconds:02}"
@@ -134,20 +134,20 @@ class TasbeehApp:
             print(f"Count: {self.count}")
     
     def show_history(self):
-        # Create a new window to display the history
+        # To view the history, open a new window.
         history_window = tk.Toplevel(self.master)
         history_window.title("Counting History")
         history_window.geometry("400x400")
         
-        # Create a Text widget to display the history, which is scrollable
+        # To show the history, create a scrollable Text widget.
         history_text = tk.Text(history_window, wrap=tk.WORD, width=40, height=15)
         history_text.pack(pady=10)
         
-        # Insert history entries into the Text widget
+        # Add entries from the past to the Text widget.
         for entry in self.history:
             history_text.insert(tk.END, entry + '\n')
         
-        # Make the text widget read-only
+        #Enable read-only access to the text widget.
         history_text.config(state=tk.DISABLED)
 if __name__ == "__main__":
     if tk:
